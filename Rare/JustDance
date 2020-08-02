@@ -1,0 +1,7 @@
+for file in *  ; do
+    echo $file | 
+    awk '$1 == "Just" {$1=""; $2=""; $3=""; if($4="-") $4=""; print $0};
+         {print}'
+    - | 
+    sed -e 's/^[[:space:]]*//'; 
+done

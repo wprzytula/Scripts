@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo cp shell-theme/myPreciousTheme/gnome-shell-theme.gresource /usr/share/gnome-shell/

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ $1 == *.pdf ]];
+	then FILENAME="$1";
+	else FILENAME="$1.pdf"
+fi
+echo $FILENAME
+gio set $FILENAME metadata::evince::inverted-colors 1
+gio set $FILENAME metadata::evince::window_maximized 1
+gio set $FILENAME metadata::evince::sidebar_visibility 0
+gio set $FILENAME metadata::evince::sizing_mode free
+gio set $FILENAME metadata::evince::zoom 5
+evince $FILENAME

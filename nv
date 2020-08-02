@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if (($# != 1))
+then echo "Bad arg number"
+else case $1 in
+     on)
+        echo "\_SB.PCI0.PEG0.PEGP._ON" | sudo cat > /proc/acpi/call
+        sudo cat /proc/acpi/call
+        ;;
+     off)
+        echo "\_SB.PCI0.PEG0.PEGP._OFF" | sudo cat > /proc/acpi/call
+        sudo cat /proc/acpi/call
+        ;;
+#     on)
+#        #if (( $(systemctl is-active bluetooth) == "inactive" ))
+#        #then sudo systemctl start bluetooth
+#        #fi
+#        bluetoothctl power on
+#        bluetoothctl agent on
+#        #bluetoothctl scan on  # wait for your device's address to show up here
+#        #bluetoothctl scan off
+#        #bluetoothctl trust 00:42:79:0A:D3:56
+#        #pair MAC_ADDRRESS
+#        bluetoothctl connect 00:42:79:0A:D3:56
+#        ;;
+#     off)
+#        bluetoothctl agent off
+#        bluetoothctl power off
+#        ;;
+     *)
+       echo "Bad arg"
+       ;;
+     esac
+fi
+exit

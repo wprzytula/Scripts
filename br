@@ -1,0 +1,17 @@
+#!/bin/sh
+if (($# != 1));
+then echo "Error!"
+else 
+    CURR_BR=`cat /sys/class/backlight/intel_backlight/brightness`
+    case $1 in   
+        up)
+            let "CURR_BR = CURR_BR * 11 / 10" 
+            ;;  
+        down)
+            let "CURR_BR = CURR_BR * 9 / 10" 
+            ;;
+        *)
+            ;;
+    esac
+    echo $CURR_BR | tee /sys/class/backlight/intel_backlight/brightness
+fi

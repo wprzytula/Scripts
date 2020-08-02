@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec hp-scan -dhpaio:/usb/DeskJet_2130_series?serial=CN6B24B1KY067S -mcolor "$@"

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+MAC_ADDRESS=00:42:79:0A:D3:56
+
+if (($# != 1))
+then echo "Bad arg number"
+else case $1 in
+     up)
+        rfkill unblock bluetooth
+	    ;;
+     down)
+        rfkill block bluetooth
+        ;;
+     on)
+    	rfkill unblock bluetooth
+        bluetoothctl power on
+        bluetoothctl agent on
+        bluetoothctl connect $MAC_ADDRESS
+        ;;
+     off)
+        bluetoothctl agent off
+        bluetoothctl power off
+	    rfkill block bluetooth
+        ;;
+     pair)
+    	rfkill unblock bluetooth
+        bluetoothctl power on
+        bluetoothctl agent on
+        bluetoothctl --timeout=4 scan on
+        bluetoothctl trust $MAC_ADDRESS
+        bluetoothctl pair $MAC_ADDRESS
+        bluetoothctl connect $MAC_ADDRESS
+        ;;
+    remove)
+        bluetoothctl remove $MAC_ADDRESS 
+        ;;
+     *)
+       echo "Bad arg"
+       ;;
+     esac
+fi
+exit

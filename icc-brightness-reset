@@ -1,0 +1,4 @@
+#/bin/zsh
+
+icc-brightness clean
+icc-brightness apply
