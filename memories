@@ -1,0 +1,41 @@
+#!/bin/python3
+
+from piexif import load
+import os
+import sys
+from datetime import date
+import re
+
+tempDir = "/tmp/memories"
+
+picDir = "/home/xps15/winXPS15/Backupy/"
+if len(sys.argv) == 2:
+    picDir = sys.argv[1]
+
+os.system("rm -r " + tempDir)
+os.system("mkdir -p " + tempDir)
+
+date = bytes(str(date.today())[5:].replace('-', ':'), "utf-8")
+
+tree = os.walk(picDir)
+counter = 0
+for directory in tree:
+#    print("walking through", directory[0])
+    for filename in directory[2]:
+        fullname = f"{directory[0]}/{filename}"
+        if filename.endswith(".jpeg") or filename.endswith(".jpg") or filename.endswith(".JPEG") or filename.endswith(".JPG"):
+            try:
+                exif = load(fullname)
+            except:
+#                print(fullname, "apparently has EXIF broken.")
+                continue
+            else:
+                if exif['Exif'].get(36868, b"").split(b' ')[0].endswith(date):
+#                    print(fullname, "- Found memory!")
+                    os.system(f'cp "{fullname}" "{tempDir}"')
+                    counter += 1
+if counter == 0:
+    print("No memories :O")
+else:
+    input("Found " + str(counter) + " memories. Look at them!")
+    os.system('feh -F.ZY -B black -d --auto-rotate --cache-size 1024 --on-last-slide hold ' + tempDir)

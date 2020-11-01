@@ -1,0 +1,52 @@
+#!/bin/python3
+
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
+options = Options()
+options.add_argument("--headless")
+driver = Firefox(options=options)
+
+def dictdef(word):
+    driver.get("http://dictionary.cambridge.org/dictionary/english/" + word)
+
+    import re
+
+    #raw_definitions = re.findall("(?<=dpos-h\">).*?(?:</div>\s*){4}", driver.page_source, flags=re.S)
+    raw_definitions = (match.group() for match in re.finditer("(?<=dpos-h\">).*?(?:</div>\s*){4}", driver.page_source, flags=re.S))
+
+    def purify(definition):
+        tmp = re.sub('\w+=".*?"', '', definition)
+        tmp = re.sub('</?.*?>', ' ', tmp)
+        tmp = re.sub('&nbsp;', ' ', tmp)
+        tmp = re.sub("Your browser doesn't support HTML5 audio", '', tmp)
+        tmp = re.sub('\s+', ' ', tmp)
+        tmp = re.sub("{.*?}", " ", tmp)
+        tmp = re.sub("SMART.*$", "", tmp)
+        tmp = re.sub(" , ", ", ", tmp)
+        tmp = re.sub(" \. ", ". ", tmp)
+
+        return tmp.strip()
+
+    definitions = map(purify, raw_definitions)
+    for i, definition in enumerate(definitions):
+        print('\t', i + 1, definition, '\n')
+#    return raw_definitions, definitions
+
+def interactive():
+    try:
+        word = input("Provide a word: ")
+        while word:
+            dictdef(word)
+            print()
+            word = input("Provide a word: ")
+    except EOFError:
+        print()
+import sys
+if len(sys.argv) > 2:
+    print("Too many arguments.")
+elif len(sys.argv) == 1:
+    interactive()
+else:
+    dictdef(sys.argv[1])
+import os
+os.system("rm geckodriver.log")

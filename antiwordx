@@ -1,0 +1,14 @@
+#/bin/bash
+
+if (($# != 1))
+then echo "Bad arg number"
+else
+    libreoffice --headless --convert-to "txt:Text (encoded):UTF8" "$1" >/dev/null
+    oldName=$1
+    newName="${oldName%docx}txt"
+    cat $newName
+    rm $newName
+fi
+
+    
+    

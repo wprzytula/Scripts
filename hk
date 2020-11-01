@@ -15,6 +15,7 @@ else case $1 in
     	rfkill unblock bluetooth
         bluetoothctl power on
         bluetoothctl agent on
+        sleep 1
         bluetoothctl connect $MAC_ADDRESS
         ;;
      off)
