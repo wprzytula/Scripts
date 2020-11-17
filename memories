@@ -12,7 +12,7 @@ picDir = "/home/xps15/winXPS15/Backupy/"
 if len(sys.argv) == 2:
     picDir = sys.argv[1]
 
-os.system("rm -r " + tempDir)
+os.system("rm -rf " + tempDir)
 os.system("mkdir -p " + tempDir)
 
 date = bytes(str(date.today())[5:].replace('-', ':'), "utf-8")
@@ -37,5 +37,5 @@ for directory in tree:
 if counter == 0:
     print("No memories :O")
 else:
-    input("Found " + str(counter) + " memories. Look at them!")
+    print("Found " + str(counter) + " memories. Look at them!")
     os.system('feh -F.ZY -B black -d --auto-rotate --cache-size 1024 --on-last-slide hold ' + tempDir)
